@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Book Recommender System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #121212;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #00a65a, #008f4e);
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            font-size: 50px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: white;
+        }
+        form input.form-control {
+            font-size: 16px;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #00a65a;
+            color: white;
+        }
+        form input.form-control::placeholder {
+            color: #88ffb0;
+        }
+        form input.btn {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 20px;
+            width: 100%;
+            background-color: #00a65a;
+            border: none;
+        }
+        form input.btn:hover {
+            background-color: #008f4e;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        .card-body {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+        }
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: white;
+            padding: 5px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .book-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            min-height: 40px;
+            margin-bottom: 8px;
+        }
+        .book-author {
+            font-size: 14px;
+            color: #00ff88;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/">📚 My Book Recommender</a>
+    <div>
+      <ul class="navbar-nav ms-auto" style="display:flex; gap:20px;">
+        <li class="nav-item"><a class="nav-link" href="/" style="font-weight:bold;">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/recommend" style="font-weight:bold;">Recommend</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact" style="font-weight:bold;">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+    <h1>Recommend Books</h1>
+    <form action="/recommend_books" method="post" class="mb-5">
+        <input
+          name="user_input"
+          type="text"
+          class="form-control"
+          placeholder="Enter book name"
+          required
+          value="{{ request.form.user_input if request.form.user_input else '' }}"
+        ><br>
+        <input type="submit" class="btn btn-success" value="Get Recommendations">
+    </form>
+
+    <!-- Add this section for when no books are found -->
+    {% if request.method == 'POST' and not data %}
+    <div style="background-color: #1e1e1e; border: 2px solid #ffd700; border-radius: 10px; padding: 20px; text-align: center; margin: 30px 0;">
+        <div style="font-size: 48px; color: #ffd700; margin-bottom: 15px;">🔍</div>
+        <div style="font-size: 18px; color: #fff8dc; margin-bottom: 10px;">
+            No recommendations found for your search
+        </div>
+        <div style="font-size: 14px; color: #cccccc; margin-top: 15px;">
+            <strong>Suggestions:</strong><br>
+            • Try searching with just the main title<br>
+            • Check for typos in the book name<br>
+            • Try a different book title
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        {% if data %}
+            {% for i in data %}
+            <div class="col-md-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="card-img-top" src="{{ i[2] }}" alt="Book Cover">
+                        <p class="book-title">{{ i[0] }}</p>
+                        <p class="book-author">Author: {{ i[1] }}</p>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

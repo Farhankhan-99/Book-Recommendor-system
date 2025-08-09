@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Recommender System</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #00a65a, #008f4e);
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .text-white {
+            color: white !important;
+        }
+        .book-card {
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
+        }
+        .book-img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain; /* preserve aspect ratio, no stretching */
+            background-color: white;
+            padding: 0; /* removed padding */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+        .book-details {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .book-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            min-height: 40px;
+        }
+        .book-author {
+            font-size: 15px;
+            color: #00ff88;
+        }
+        .book-stats {
+            font-size: 14px;
+            color: #cccccc;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+   <nav class="navbar navbar-expand-lg" style="background: linear-gradient(90deg, #00a65a, #008f4e);">
+  <div class="container">
+    <a class="navbar-brand text-white" href="/">📚 My Book Recommender</a>
+    <div>
+      <ul class="navbar-nav ms-auto" style="display:flex; gap:20px;">
+        <li class="nav-item"><a class="nav-link text-white" href="/" style="font-weight:bold;">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="/recommend" style="font-weight:bold;">Recommend</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="/contact" style="font-weight:bold;">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Content -->
+    <div class="container mt-5">
+        <h1 class="text-white text-center mb-4" style="font-size:50px">📕 Top 50 Books</h1>
+        <div class="row g-4">
+            {% for i in range(book_name|length) %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="book-card">
+                        <img class="book-img" src="{{ image[i] }}" alt="Book Cover">
+                        <div class="book-details">
+                            <p class="book-title">{{ book_name[i] }}</p>
+                            <p class="book-author">✍ Author  - {{ author[i] }}</p>
+                            <p class="book-stats">📊 Votes - {{ votes[i] }}</p>
+                            <p class="book-stats">⭐ Rating - {{ rating[i] | round(1) }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
